@@ -2,25 +2,30 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>新分頁 · CurioDaily</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#faf9f6" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)" />
+  <title>CurioDaily · 極簡每日策展</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- 頂部極簡導覽列 -->
   <header class="topbar">
-    <button class="quiet-btn" id="goalTrigger" title="點擊切換學習目標或時段">
+    <button class="quiet-btn" id="goalTrigger" title="點擊切換目標或時段">
       <span class="dot"></span>
       <span id="statusLabel">載入中...</span>
     </button>
 
     <nav class="top-actions">
-      <button class="quiet-btn" id="btnOpenDrawer">清單與筆記 <span id="savedBadge" class="count">0</span></button>
+      <button class="quiet-btn" id="btnOpenDrawer">清單 <span id="savedBadge" class="count">0</span></button>
       <button class="quiet-btn" id="btnOpenSettings">設定</button>
     </nav>
   </header>
 
-  <!-- 中央留白焦點區 -->
   <main class="canvas">
     <article class="focus-card" id="focusCard">
       <div class="eyebrow" id="recMeta">PODCAST · 15 MIN</div>
@@ -58,7 +63,6 @@
     </article>
   </main>
 
-  <!-- 側滑抽屜：週末清單 & 學習筆記 -->
   <div class="backdrop" id="drawerBackdrop">
     <aside class="drawer" id="drawer">
       <div class="drawer-header">
@@ -72,17 +76,16 @@
     </aside>
   </div>
 
-  <!-- 極簡設定彈窗 -->
   <div class="backdrop" id="settingsBackdrop">
     <div class="modal">
       <div class="modal-header">
-        <h2>偏好與策展設定</h2>
+        <h2>偏好與 AI 設定</h2>
         <button class="quiet-btn" id="btnCloseSettings">✕</button>
       </div>
 
       <div class="field">
         <label for="goalInput">目標或想培養的興趣</label>
-        <input type="text" id="goalInput" placeholder="例如：提升德語、攝影美學、AI 產品..." />
+        <input type="text" id="goalInput" placeholder="例如：提升德語、攝影美學、木工入門..." />
         <div class="chip-row">
           <button class="chip goal-chip" data-goal="提升德語">提升德語</button>
           <button class="chip goal-chip" data-goal="攝影美學">攝影美學</button>
@@ -111,7 +114,7 @@
       </div>
 
       <div class="field">
-        <label>時段場景（預設自動偵測你電腦的真實時間）</label>
+        <label>時段場景（預設自動偵測手機當前時間）</label>
         <div class="chip-row">
           <button class="chip slot-chip" data-slot="auto">自動偵測</button>
           <button class="chip slot-chip" data-slot="morning">早上通勤</button>
@@ -123,28 +126,33 @@
 
       <hr class="divider" />
 
-      <!-- ★★★ 就是這裡：雙 AI 設定區塊 ★★★ -->
       <div class="field">
-        <label>即時 AI 策展設定（同時填入可啟動「Gemini 聯網搜 + GPT 策展」）</label>
-        <div class="api-row">
-          <input type="password" id="openaiKey" placeholder="OpenAI Key (sk-...)" />
-          <input type="text" id="openaiModel" placeholder="gpt-6-luna" />
-        </div>
-        <div class="api-row">
-          <input type="password" id="geminiKey" placeholder="Gemini Key (AIza...)" />
-          <input type="text" id="geminiModel" placeholder="gemini-3.5-flash-lite" />
-        </div>
+        <label for="inviteCode">親友共享 AI 邀請碼（輸入即可啟用即時 AI，免填 API Key）</label>
+        <input type="text" id="inviteCode" placeholder="輸入朋友給你的邀請碼..." />
+        <input type="text" id="proxyUrl" placeholder="代理網址（若網站已預設則可留空）" style="margin-top:8px;" />
       </div>
 
+      <details class="advanced-fold">
+        <summary>進階：自備個人 API Key（選填）</summary>
+        <div class="field" style="margin-top:10px; margin-bottom:0;">
+          <div class="api-row">
+            <input type="password" id="openaiKey" placeholder="OpenAI Key (sk-...)" />
+            <input type="text" id="openaiModel" placeholder="gpt-6-luna" />
+          </div>
+          <div class="api-row">
+            <input type="password" id="geminiKey" placeholder="Gemini Key (AIza...)" />
+            <input type="text" id="geminiModel" placeholder="gemini-3.5-flash-lite" />
+          </div>
+        </div>
+      </details>
+
       <div class="modal-footer">
-        <button class="btn-primary" id="btnSaveSettings">保存並更新推薦</button>
+        <button class="btn-primary" id="btnSaveSettings" style="width:100%;">保存並更新推薦</button>
       </div>
     </div>
   </div>
 
-  <!-- 輕量提示 -->
   <div class="toast" id="toast"></div>
-
   <script src="app.js"></script>
 </body>
 </html>
