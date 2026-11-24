@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新分頁 · CurioDaily</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 頂部極簡導覽列 -->
+  <header class="topbar">
+    <button class="quiet-btn" id="goalTrigger" title="點擊切換學習目標或時段">
+      <span class="dot"></span>
+      <span id="statusLabel">載入中...</span>
+    </button>
+
+    <nav class="top-actions">
+      <button class="quiet-btn" id="btnOpenDrawer">清單與筆記 <span id="savedBadge" class="count">0</span></button>
+      <button class="quiet-btn" id="btnOpenSettings">設定</button>
+    </nav>
+  </header>
+
+  <!-- 中央留白焦點區 -->
+  <main class="canvas">
+    <article class="focus-card" id="focusCard">
+      <div class="eyebrow" id="recMeta">PODCAST · 15 MIN</div>
+      <h1 class="title" id="recTitle">載入今日靈感...</h1>
+      <div class="creator" id="recCreator"></div>
+
+      <hr class="divider" />
+
+      <p class="reason" id="recReason"></p>
+
+      <ul class="scaffold" id="recScaffold"></ul>
+
+      <div class="actions">
+        <a class="btn-primary" id="recLink" href="#" target="_blank" rel="noopener noreferrer">前往體驗 →</a>
+        <div class="micro-actions">
+          <button class="text-btn" id="btnWatchlist">☆ 稍後</button>
+          <button class="text-btn" id="btnDone">✓ 完成</button>
+          <button class="text-btn" id="btnNext">↻ 換一個</button>
+        </div>
+      </div>
+
+      <footer class="card-footer">
+        <div class="calibration">
+          <span>難度：</span>
+          <button class="tiny-btn" id="btnHard">太難</button>
+          <button class="tiny-btn" id="btnFit">剛好</button>
+          <button class="tiny-btn" id="btnEasy">太簡單</button>
+        </div>
+
+        <div class="note-wrap">
+          <input type="text" id="noteInput" placeholder="寫一句話收穫，按 Enter 保存..." />
+          <button class="tiny-btn" id="btnSaveNote" title="保存筆記">↵</button>
+        </div>
+      </footer>
+    </article>
+  </main>
+
+  <!-- 側滑抽屜：週末清單 & 學習筆記 -->
+  <div class="backdrop" id="drawerBackdrop">
+    <aside class="drawer" id="drawer">
+      <div class="drawer-header">
+        <div class="drawer-tabs">
+          <button class="tab active" id="tabWatchlist">待看清單</button>
+          <button class="tab" id="tabHistory">學習軌跡</button>
+        </div>
+        <button class="quiet-btn" id="btnCloseDrawer">✕</button>
+      </div>
+      <div class="drawer-body" id="drawerBody"></div>
+    </aside>
+  </div>
+
+  <!-- 極簡設定彈窗 -->
+  <div class="backdrop" id="settingsBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>偏好與策展設定</h2>
+        <button class="quiet-btn" id="btnCloseSettings">✕</button>
+      </div>
+
+      <div class="field">
+        <label for="goalInput">目標或想培養的興趣</label>
+        <input type="text" id="goalInput" placeholder="例如：提升德語、攝影美學、AI 產品..." />
+        <div class="chip-row">
+          <button class="chip goal-chip" data-goal="提升德語">提升德語</button>
+          <button class="chip goal-chip" data-goal="攝影美學">攝影美學</button>
+          <button class="chip goal-chip" data-goal="AI與產品">AI與產品</button>
+          <button class="chip goal-chip" data-goal="心理與習慣">心理與習慣</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>當前程度</label>
+        <div class="chip-row">
+          <button class="chip lvl-chip" data-lvl="1">入門 A1-A2</button>
+          <button class="chip lvl-chip" data-lvl="2">進階 B1-B2</button>
+          <button class="chip lvl-chip" data-lvl="3">精通 C1+</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>推薦媒介</label>
+        <div class="chip-row">
+          <button class="chip media-chip" data-media="podcast">播客</button>
+          <button class="chip media-chip" data-media="video">視頻</button>
+          <button class="chip media-chip" data-media="book">書籍</button>
+          <button class="chip media-chip" data-media="movie">電影</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>時段場景（預設自動偵測你電腦的真實時間）</label>
+        <div class="chip-row">
+          <button class="chip slot-chip" data-slot="auto">自動偵測</button>
+          <button class="chip slot-chip" data-slot="morning">早上通勤</button>
+          <button class="chip slot-chip" data-slot="noon">午休碎片</button>
+          <button class="chip slot-chip" data-slot="evening">晚上睡前</button>
+          <button class="chip slot-chip" data-slot="weekend">週末沉浸</button>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ★★★ 就是這裡：雙 AI 設定區塊 ★★★ -->
+      <div class="field">
+        <label>即時 AI 策展設定（同時填入可啟動「Gemini 聯網搜 + GPT 策展」）</label>
+        <div class="api-row">
+          <input type="password" id="openaiKey" placeholder="OpenAI Key (sk-...)" />
+          <input type="text" id="openaiModel" placeholder="gpt-6-luna" />
+        </div>
+        <div class="api-row">
+          <input type="password" id="geminiKey" placeholder="Gemini Key (AIza...)" />
+          <input type="text" id="geminiModel" placeholder="gemini-3.5-flash-lite" />
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-primary" id="btnSaveSettings">保存並更新推薦</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 輕量提示 -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
